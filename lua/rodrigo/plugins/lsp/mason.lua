@@ -39,7 +39,7 @@ return {
 				"prismals",
 				"pyright",
 				"gopls",
-				"angular-language-server",
+				"angularls",
 			},
 		})
 

@@ -4,7 +4,7 @@ return {
 	dependencies = {
 		"hrsh7th/cmp-nvim-lsp",
 		{ "antosha417/nvim-lsp-file-operations", config = true },
-		{ "folke/neodev.nvim", opts = {} },
+		{ "akinsho/bufferline.nvim", opts = {} },
 	},
 	config = function()
 		-- import lspconfig plugin
@@ -78,39 +78,72 @@ return {
 			vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
 		end
 
-		mason_lspconfig.setup_handlers = function() end
+		lspconfig.ts_ls.setup({
+			capabilities = capabilities,
+		})
 
-		mason_lspconfig.setup_handlers({
-			-- default handler for installed servers
-			function(server_name)
-				lspconfig[server_name].setup({
-					capabilities = capabilities,
-				})
-			end,
-			["graphql"] = function()
-				-- configure graphql language server
-				lspconfig["graphql"].setup({
-					capabilities = capabilities,
-					filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
-				})
-			end,
-			["lua_ls"] = function()
-				-- configure lua server (with special settings)
-				lspconfig["lua_ls"].setup({
-					capabilities = capabilities,
-					settings = {
-						Lua = {
-							-- make the language server recognize "vim" global
-							diagnostics = {
-								globals = { "vim" },
+		lspconfig.gopls.setup({
+			capabilities = capabilities,
+			settings = {
+				gopls = {
+					["ui.inlayhint.hints"] = {
+						compositeLiteralFields = true,
+						constantValues = true,
+						parameterNames = true,
+					},
+				},
+			},
+		})
+
+		lspconfig.lua_ls.setup({
+			capabilities = capabilities,
+			on_init = function(client)
+				if client.workspace_folders then
+					local path = client.workspace_folders[1].name
+					if
+						not vim.loop.fs_stat(path .. "/.luarc.json") and not vim.loop.fs_stat(path .. "/.luarc.jsonc")
+					then
+						client.config.settings = vim.tbl_deep_extend("force", client.config.settings, {
+							Lua = {
+								runtime = {
+									version = "LuaJIT",
+								},
+								workspace = {
+									checkThirdParty = false,
+									library = {
+										vim.env.VIMRUNTIME,
+									},
+								},
 							},
-							completion = {
-								callSnippet = "Replace",
-							},
+						})
+						client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
+					end
+				end
+			end,
+			settings = {
+				Lua = {
+					completion = {
+						callSnippet = "Replace",
+					},
+					diagnostics = {
+						globals = { "vim" },
+					},
+					workspace = {
+						library = {
+							[vim.fn.expand("$VIMRUNTIME/lua")] = true,
+							[vim.fn.stdpath("config") .. "/lua"] = true,
 						},
 					},
-				})
-			end,
+					telemetry = {
+						enable = false,
+					},
+				},
+			},
+		})
+
+		lspconfig.graphql.setup({
+			capabilities = capabilities,
+			filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
 		})
 	end,
 }
