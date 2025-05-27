@@ -1,7 +1,7 @@
 return {
-	"williamboman/mason.nvim",
+	"mason-org/mason.nvim",
 	dependencies = {
-		"williamboman/mason-lspconfig.nvim",
+		"mason-org/mason-lspconfig.nvim",
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
 	},
 	config = function()
@@ -39,6 +39,7 @@ return {
 				"prismals",
 				"pyright",
 				"gopls",
+				"angular-language-server",
 			},
 		})
 
@@ -51,6 +52,7 @@ return {
 				"pylint", -- python linter
 				"eslint_d", -- js linter,
 				"golangci-lint", -- go linter
+				"angular-language-server",
 			},
 		})
 	end,
