@@ -10,13 +10,18 @@ return {
 		-- import lspconfig plugin
 		local lspconfig = require("lspconfig")
 
-		-- import mason_lspconfig plugin
-		local mason_lspconfig = require("mason-lspconfig")
-
 		-- import cmp-nvim-lsp plugin
 		local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
 		local keymap = vim.keymap -- for conciseness
+
+		local goto_prev = function()
+			vim.diagnostic.jump({ count = -1, float = true })
+		end
+
+		local goto_next = function()
+			vim.diagnostic.jump({ count = 1, float = true })
+		end
 
 		vim.api.nvim_create_autocmd("LspAttach", {
 			group = vim.api.nvim_create_augroup("UserLspConfig", {}),
@@ -54,10 +59,10 @@ return {
 				keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts) -- show diagnostics for line
 
 				opts.desc = "Go to previous diagnostic"
-				keymap.set("n", "[d", vim.diagnostic.goto_prev, opts) -- jump to previous diagnostic in buffer
+				keymap.set("n", "[d", goto_prev, opts) -- jump to previous diagnostic in buffer
 
 				opts.desc = "Go to next diagnostic"
-				keymap.set("n", "]d", vim.diagnostic.goto_next, opts) -- jump to next diagnostic in buffer
+				keymap.set("n", "]d", goto_next, opts) -- jump to next diagnostic in buffer
 
 				opts.desc = "Show documentation for what is under cursor"
 				keymap.set("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
@@ -71,12 +76,28 @@ return {
 		local capabilities = cmp_nvim_lsp.default_capabilities()
 
 		-- Change the Diagnostic symbols in the sign column (gutter)
-		-- (not in youtube nvim video)
-		local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
-		for type, icon in pairs(signs) do
-			local hl = "DiagnosticSign" .. type
-			vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
-		end
+		vim.diagnostic.config({
+			signs = {
+				text = {
+					[vim.diagnostic.severity.ERROR] = " ",
+					[vim.diagnostic.severity.WARN] = " ",
+					[vim.diagnostic.severity.INFO] = "󰋼 ",
+					[vim.diagnostic.severity.HINT] = "󰌵 ",
+				},
+				texthl = {
+					[vim.diagnostic.severity.ERROR] = "Error",
+					[vim.diagnostic.severity.WARN] = "Warn",
+					[vim.diagnostic.severity.HINT] = "Hint",
+					[vim.diagnostic.severity.INFO] = "Info",
+				},
+				numhl = {
+					[vim.diagnostic.severity.ERROR] = "",
+					[vim.diagnostic.severity.WARN] = "",
+					[vim.diagnostic.severity.HINT] = "",
+					[vim.diagnostic.severity.INFO] = "",
+				},
+			},
+		})
 
 		lspconfig.ts_ls.setup({
 			capabilities = capabilities,
@@ -100,9 +121,7 @@ return {
 			on_init = function(client)
 				if client.workspace_folders then
 					local path = client.workspace_folders[1].name
-					if
-						not vim.loop.fs_stat(path .. "/.luarc.json") and not vim.loop.fs_stat(path .. "/.luarc.jsonc")
-					then
+					if not vim.uv.fs_stat(path .. "/.luarc.json") and not vim.uv.fs_stat(path .. "/.luarc.jsonc") then
 						client.config.settings = vim.tbl_deep_extend("force", client.config.settings, {
 							Lua = {
 								runtime = {
@@ -145,5 +164,8 @@ return {
 			capabilities = capabilities,
 			filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
 		})
+
+		-- spins up mason-lspconfig
+		require("mason-lspconfig").setup()
 	end,
 }
