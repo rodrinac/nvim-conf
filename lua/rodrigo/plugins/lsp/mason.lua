@@ -40,6 +40,7 @@ return {
 				"pyright",
 				"gopls",
 				"angularls",
+				"rust_analyzer",
 			},
 		})
 
@@ -53,6 +54,7 @@ return {
 				"eslint_d", -- js linter,
 				"golangci-lint", -- go linter
 				"angular-language-server",
+				"rust_analyzer",
 			},
 		})
 	end,
