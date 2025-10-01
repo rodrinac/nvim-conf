@@ -2,17 +2,10 @@ return {
 	"neovim/nvim-lspconfig",
 	event = { "BufReadPre", "BufNewFile" },
 	dependencies = {
-		"hrsh7th/cmp-nvim-lsp",
 		{ "antosha417/nvim-lsp-file-operations", config = true },
 		{ "akinsho/bufferline.nvim", opts = {} },
 	},
 	config = function()
-		-- import lspconfig plugin
-		local lspconfig = require("lspconfig")
-
-		-- import cmp-nvim-lsp plugin
-		local cmp_nvim_lsp = require("cmp_nvim_lsp")
-
 		local keymap = vim.keymap -- for conciseness
 
 		local goto_prev = function()
@@ -72,9 +65,6 @@ return {
 			end,
 		})
 
-		-- used to enable autocompletion (assign to every lsp server config)
-		local capabilities = cmp_nvim_lsp.default_capabilities()
-
 		-- Change the Diagnostic symbols in the sign column (gutter)
 		vim.diagnostic.config({
 			signs = {
@@ -99,12 +89,9 @@ return {
 			},
 		})
 
-		lspconfig.ts_ls.setup({
-			capabilities = capabilities,
-		})
+		vim.lsp.enable("ts_ls")
 
-		lspconfig.gopls.setup({
-			capabilities = capabilities,
+		vim.lsp.config["gopls"] = {
 			settings = {
 				gopls = {
 					["ui.inlayhint.hints"] = {
@@ -114,10 +101,9 @@ return {
 					},
 				},
 			},
-		})
+		}
 
-		lspconfig.lua_ls.setup({
-			capabilities = capabilities,
+		vim.lsp.config["lua_ls"] = {
 			on_init = function(client)
 				if client.workspace_folders then
 					local path = client.workspace_folders[1].name
@@ -158,14 +144,13 @@ return {
 					},
 				},
 			},
-		})
+		}
 
-		lspconfig.graphql.setup({
-			capabilities = capabilities,
+		vim.lsp.config["graphql"] = {
 			filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
-		})
+		}
 
-		lspconfig.rust_analyzer.setup({
+		vim.lsp.config["rust_analyzer"] = {
 			settings = {
 				["rust-analyzer"] = {
 					cargo = {
@@ -176,7 +161,7 @@ return {
 					},
 				},
 			},
-		})
+		}
 
 		-- spins up mason-lspconfig
 		require("mason-lspconfig").setup()
