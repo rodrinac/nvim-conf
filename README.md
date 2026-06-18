@@ -55,7 +55,8 @@ lua/
     ├── mini.lua         mini.nvim modules
     ├── gitsigns.lua     Git signs & hunks
     ├── completion.lua   blink.cmp
-    └── lsp.lua          Diagnostics, LSP servers, efm linters/formatters
+    ├── lsp.lua          Diagnostics, LSP servers, efm linters/formatters
+    └── whichkey.lua     Keybinding hints
 ```
 
 > Load order matters: `completion` is required before `lsp` because the LSP
@@ -75,6 +76,7 @@ lua/
 | [efmls-configs-nvim](https://github.com/creativenull/efmls-configs-nvim) | efm linters/formatters |
 | [blink.cmp](https://github.com/saghen/blink.cmp) | Completion |
 | [LuaSnip](https://github.com/L3MON4D3/LuaSnip) | Snippets |
+| [which-key.nvim](https://github.com/folke/which-key.nvim) | Keybinding hint popups |
 
 ## Keymaps
 
