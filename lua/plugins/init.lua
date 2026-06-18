@@ -11,7 +11,7 @@ vim.pack.add({"https://www.github.com/lewis6991/gitsigns.nvim", "https://www.git
               "https://github.com/creativenull/efmls-configs-nvim", {
     src = "https://github.com/saghen/blink.cmp",
     version = vim.version.range("1.*")
-}, "https://github.com/L3MON4D3/LuaSnip"})
+}, "https://github.com/L3MON4D3/LuaSnip", "https://github.com/folke/which-key.nvim"})
 
 -- Plugin configurations (order matters: completion before lsp).
 require("plugins.treesitter")
@@ -22,3 +22,4 @@ require("ui.dashboard")
 require("plugins.gitsigns")
 require("plugins.completion")
 require("plugins.lsp")
+require("plugins.whichkey")
