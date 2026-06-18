@@ -34,12 +34,12 @@ vim.opt.concealcursor = "" -- do not hide cursorline in markup
 vim.opt.lazyredraw = true -- do not redraw during macros
 vim.opt.synmaxcol = 300 -- syntax highlighting limit
 vim.opt.fillchars = {
-    eob = " "
+  eob = " ",
 } -- hide "~" on empty lines
 
 local undodir = vim.fn.expand("~/.vim/undodir")
 if vim.fn.isdirectory(undodir) == 0 then -- create undodir if nonexistent
-    vim.fn.mkdir(undodir, "p")
+  vim.fn.mkdir(undodir, "p")
 end
 
 vim.opt.backup = false -- do not create a backup file
@@ -66,7 +66,7 @@ vim.opt.modifiable = true -- allow buffer modifications
 vim.opt.encoding = "utf-8" -- set encoding
 
 vim.opt.guicursor =
-    "n-v-c:block,i-ci-ve:block,r-cr:hor20,o:hor50,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor,sm:block-blinkwait175-blinkoff150-blinkon175" -- cursor blinking and settings
+  "n-v-c:block,i-ci-ve:block,r-cr:hor20,o:hor50,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor,sm:block-blinkwait175-blinkoff150-blinkon175" -- cursor blinking and settings
 
 -- Folding: requires treesitter available at runtime; safe fallback if not
 vim.opt.foldmethod = "expr" -- use expression for folding

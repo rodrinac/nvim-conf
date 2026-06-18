@@ -4,30 +4,38 @@
 local wk = require("which-key")
 
 wk.setup({
-    preset = "modern",
-    delay = 300
+  preset = "modern",
+  delay = 300,
 })
 
 -- Group labels for the leader-prefixed keymaps defined across the config.
-wk.add({{
+wk.add({
+  {
     "<leader>f",
-    group = "find"
-}, {
+    group = "find",
+  },
+  {
     "<leader>g",
-    group = "goto / lsp"
-}, {
+    group = "goto / lsp",
+  },
+  {
     "<leader>h",
-    group = "git hunk"
-}, {
+    group = "git hunk",
+  },
+  {
     "<leader>s",
-    group = "split"
-}, {
+    group = "split",
+  },
+  {
     "<leader>b",
-    group = "buffer"
-}, {
+    group = "buffer",
+  },
+  {
     "<leader>d",
-    group = "diagnostics"
-}, {
+    group = "diagnostics",
+  },
+  {
     "<leader>t",
-    group = "terminal / toggle"
-}})
+    group = "terminal / toggle",
+  },
+})

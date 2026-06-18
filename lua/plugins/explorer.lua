@@ -2,39 +2,39 @@
 -- FILE EXPLORER (nvim-tree)
 -- ============================================================================
 require("nvim-tree").setup({
-    view = {
-        width = 35
-    },
-    filters = {
-        dotfiles = false
-    },
-    renderer = {
-        group_empty = true
-    }
+  view = {
+    width = 35,
+  },
+  filters = {
+    dotfiles = false,
+  },
+  renderer = {
+    group_empty = true,
+  },
 })
 
 vim.keymap.set("n", "<leader>e", function()
-    require("nvim-tree.api").tree.toggle()
+  require("nvim-tree.api").tree.toggle()
 end, {
-    desc = "Toggle NvimTree"
+  desc = "Toggle NvimTree",
 })
 
 vim.api.nvim_set_hl(0, "NvimTreeNormalNC", {
-    bg = "none"
+  bg = "none",
 })
 vim.api.nvim_set_hl(0, "SignColumn", {
-    bg = "none"
+  bg = "none",
 })
 vim.api.nvim_set_hl(0, "NvimTreeSignColumn", {
-    bg = "none"
+  bg = "none",
 })
 vim.api.nvim_set_hl(0, "NvimTreeNormal", {
-    bg = "none"
+  bg = "none",
 })
 vim.api.nvim_set_hl(0, "NvimTreeWinSeparator", {
-    fg = "#2a2a2a",
-    bg = "none"
+  fg = "#2a2a2a",
+  bg = "none",
 })
 vim.api.nvim_set_hl(0, "NvimTreeEndOfBuffer", {
-    bg = "none"
+  bg = "none",
 })

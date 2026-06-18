@@ -3,18 +3,20 @@
 -- ============================================================================
 local starter = require("mini.starter")
 
-local header = table.concat({"",
-                             "██████╗  ██████╗ ██████╗ ██████╗ ██╗███╗   ██╗ █████╗  ██████╗",
-                             "██╔══██╗██╔═══██╗██╔══██╗██╔══██╗██║████╗  ██║██╔══██╗██╔════╝",
-                             "██████╔╝██║   ██║██║  ██║██████╔╝██║██╔██╗ ██║███████║██║     ",
-                             "██╔══██╗██║   ██║██║  ██║██╔══██╗██║██║╚██╗██║██╔══██║██║     ",
-                             "██║  ██║╚██████╔╝██████╔╝██║  ██║██║██║ ╚████║██║  ██║╚██████╗",
-                             "╚═╝  ╚═╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝ ╚═════╝",
-                             ""}, "\n")
+local header = table.concat({
+  "",
+  "██████╗  ██████╗ ██████╗ ██████╗ ██╗███╗   ██╗ █████╗  ██████╗",
+  "██╔══██╗██╔═══██╗██╔══██╗██╔══██╗██║████╗  ██║██╔══██╗██╔════╝",
+  "██████╔╝██║   ██║██║  ██║██████╔╝██║██╔██╗ ██║███████║██║     ",
+  "██╔══██╗██║   ██║██║  ██║██╔══██╗██║██║╚██╗██║██╔══██║██║     ",
+  "██║  ██║╚██████╔╝██████╔╝██║  ██║██║██║ ╚████║██║  ██║╚██████╗",
+  "╚═╝  ╚═╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝ ╚═════╝",
+  "",
+}, "\n")
 
 starter.setup({
-    header = header,
-    footer = "Allons-z \u{26a1}", -- ⚡
-    items = {starter.sections.builtin_actions(), starter.sections.recent_files(5, false)},
-    content_hooks = {starter.gen_hook.adding_bullet(), starter.gen_hook.aligning("center", "center")}
+  header = header,
+  footer = "Allons-z \u{26a1}", -- ⚡
+  items = { starter.sections.builtin_actions(), starter.sections.recent_files(5, false) },
+  content_hooks = { starter.gen_hook.adding_bullet(), starter.gen_hook.aligning("center", "center") },
 })
