@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+#
+# Pre-commit hook: runs StyLua formatting check and Luacheck on staged Lua files.
+# Install (once per clone):  git config core.hooksPath .githooks
+#
+set -euo pipefail
+
+# Collect staged Lua files (Added, Copied, Modified, Renamed), NUL-separated for safety.
+lua_files=()
+while IFS= read -r -d '' file; do
+  lua_files+=("$file")
+done < <(git diff --cached --name-only --diff-filter=ACMR -z -- '*.lua')
+
+if [ ${#lua_files[@]} -eq 0 ]; then
+  exit 0
+fi
+
+fail=0
+
+# --- StyLua format check ---
+if command -v stylua >/dev/null 2>&1; then
+  echo "→ StyLua: checking formatting..."
+  if ! stylua --check "${lua_files[@]}"; then
+    echo "✗ StyLua: formatting issues found. Run 'stylua .' to fix." >&2
+    fail=1
+  fi
+else
+  echo "⚠ StyLua not installed — skipping format check (brew install stylua)." >&2
+fi
+
+# --- Luacheck static analysis ---
+if command -v luacheck >/dev/null 2>&1; then
+  echo "→ Luacheck: linting..."
+  if ! luacheck "${lua_files[@]}"; then
+    echo "✗ Luacheck: lint issues found." >&2
+    fail=1
+  fi
+else
+  echo "⚠ Luacheck not installed — skipping lint (luarocks install luacheck)." >&2
+fi
+
+if [ "$fail" -ne 0 ]; then
+  echo "" >&2
+  echo "Commit aborted. Fix the issues above or use 'git commit --no-verify' to bypass." >&2
+  exit 1
+fi
+
+exit 0

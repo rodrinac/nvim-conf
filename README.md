@@ -131,3 +131,31 @@ Leader is `<Space>`.
 | `<CR>` | Accept |
 | `<C-j>` / `<C-k>` | Select next / previous |
 | `<Tab>` / `<S-Tab>` | Snippet forward / backward |
+
+## Development
+
+Lua files are checked with **StyLua** (formatting) and **Luacheck** (linting), both
+in CI ([.github/workflows/lint.yml](.github/workflows/lint.yml)) and via a local
+pre-commit hook so issues are caught before they reach the pipeline.
+
+Enable the hook once per clone:
+
+```sh
+git config core.hooksPath .githooks
+```
+
+Install the tools the hook uses (missing tools are skipped with a warning):
+
+```sh
+brew install stylua
+luarocks install luacheck
+```
+
+Run the checks manually anytime:
+
+```sh
+stylua --check .   # add no flags to auto-format: stylua .
+luacheck . --globals vim
+```
+
+Bypass the hook for a one-off commit with `git commit --no-verify`.
